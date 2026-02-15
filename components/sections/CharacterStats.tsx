@@ -17,6 +17,8 @@ export function CharacterStats() {
   );
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
   const hasAnimated = useRef(false);
+  const valuesRef = useRef<number[]>(CHARACTER_STATS.map(() => 0));
+  const rafIdRef = useRef<number>(0);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -38,23 +40,25 @@ export function CharacterStats() {
             delay: i * 0.15,
             ease: "power2.out",
             onUpdate: () => {
-              setAnimatedValues((prev) => {
-                const next = [...prev];
-                next[i] = obj.value;
-                return next;
-              });
+              valuesRef.current[i] = obj.value;
+              if (!rafIdRef.current) {
+                rafIdRef.current = requestAnimationFrame(() => {
+                  setAnimatedValues([...valuesRef.current]);
+                  rafIdRef.current = 0;
+                });
+              }
             },
           });
         });
       },
     });
 
-    return () => trigger.kill();
+    return () => {
+      trigger.kill();
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    };
   }, []);
 
-  const totalPower =
-    CHARACTER_STATS.reduce((sum, s) => sum + s.value, 0) /
-    CHARACTER_STATS.length;
   const animatedTotal =
     animatedValues.reduce((sum, v) => sum + v, 0) / animatedValues.length;
 

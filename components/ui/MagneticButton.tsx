@@ -60,6 +60,18 @@ export function MagneticButton({
     });
   }, []);
 
+  const handleFocus = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    gsap.to(el, { scale: 1.03, duration: 0.3, ease: "power2.out" });
+  }, []);
+
+  const handleBlur = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    gsap.to(el, { x: 0, y: 0, scale: 1, duration: 0.5, ease: "elastic.out(1, 0.4)" });
+  }, []);
+
   return (
     <Component
       ref={ref as React.Ref<HTMLButtonElement & HTMLAnchorElement>}
@@ -69,6 +81,8 @@ export function MagneticButton({
       )}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       onClick={onClick}
       {...props}
     >

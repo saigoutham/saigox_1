@@ -148,7 +148,7 @@ export function Hero() {
       {/* Scroll indicator */}
       <div
         ref={scrollRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="scroll-indicator-hide absolute bottom-8 left-1/2 -translate-x-1/2"
         style={{ opacity: 0 }}
       >
         <div className="flex flex-col items-center gap-2">

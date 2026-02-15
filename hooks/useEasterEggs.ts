@@ -43,29 +43,42 @@ export function useEasterEggs() {
             // Flash a brief dev-stats overlay
             const overlay = document.createElement("div");
             overlay.className = "konami-flash";
-            overlay.innerHTML = `
-              <div style="
-                position: fixed; inset: 0; z-index: 9999;
-                display: flex; align-items: center; justify-content: center;
-                background: rgba(0,0,0,0.85);
-                animation: fadeIn 0.3s ease-out;
-              ">
-                <div style="
-                  text-align: center; font-family: var(--font-jetbrains), monospace;
-                  color: #10b981;
-                ">
-                  <p style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem; opacity: 0.7;">
-                    ↑↑↓↓←→←→BA
-                  </p>
-                  <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
-                    DEV MODE UNLOCKED
-                  </p>
-                  <p style="font-size: 0.7rem; opacity: 0.5;">
-                    Easter egg discovered! You found the Konami code.
-                  </p>
-                </div>
-              </div>
-            `;
+
+            const backdrop = document.createElement("div");
+            Object.assign(backdrop.style, {
+              position: "fixed", inset: "0", zIndex: "9999",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              background: "rgba(0,0,0,0.85)",
+              animation: "fadeIn 0.3s ease-out",
+            });
+
+            const content = document.createElement("div");
+            Object.assign(content.style, {
+              textAlign: "center",
+              fontFamily: "var(--font-jetbrains), monospace",
+              color: "#10b981",
+            });
+
+            const arrow = document.createElement("p");
+            arrow.textContent = "\u2191\u2191\u2193\u2193\u2190\u2192\u2190\u2192BA";
+            Object.assign(arrow.style, {
+              fontSize: "0.75rem", letterSpacing: "0.2em",
+              textTransform: "uppercase", marginBottom: "0.5rem", opacity: "0.7",
+            });
+
+            const title = document.createElement("p");
+            title.textContent = "DEV MODE UNLOCKED";
+            Object.assign(title.style, {
+              fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem",
+            });
+
+            const desc = document.createElement("p");
+            desc.textContent = "Easter egg discovered! You found the Konami code.";
+            Object.assign(desc.style, { fontSize: "0.7rem", opacity: "0.5" });
+
+            content.append(arrow, title, desc);
+            backdrop.appendChild(content);
+            overlay.appendChild(backdrop);
             document.body.appendChild(overlay);
             setTimeout(() => overlay.remove(), 2500);
           }

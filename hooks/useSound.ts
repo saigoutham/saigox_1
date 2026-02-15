@@ -64,9 +64,10 @@ export function useSound() {
 
   // Cleanup on unmount
   useEffect(() => {
+    const sounds = soundsRef.current;
     return () => {
-      soundsRef.current.forEach((howl) => howl.unload());
-      soundsRef.current.clear();
+      sounds.forEach((howl) => howl.unload());
+      sounds.clear();
     };
   }, []);
 

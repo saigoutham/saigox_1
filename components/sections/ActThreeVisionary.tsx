@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -50,16 +50,17 @@ export function ActThreeVisionary() {
   const featuredPhotos = PHOTOS.filter((p) => p.featured);
   const otherPhotos = PHOTOS.filter((p) => !p.featured);
 
-  // Auto-develop featured photos (deferred to avoid setState during render)
+  // Auto-develop featured photos (runs once on mount)
+  const hasAutoDevRef = useRef(false);
   useEffect(() => {
-    setTimeout(() => {
-      featuredPhotos.forEach((p) => {
-        if (!isDeveloped(p.id)) {
-          markPhotoDeveloped(p.id);
-        }
-      });
-    }, 0);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (hasAutoDevRef.current) return;
+    hasAutoDevRef.current = true;
+    featuredPhotos.forEach((p) => {
+      if (!developedPhotos.includes(p.id)) {
+        markPhotoDeveloped(p.id);
+      }
+    });
+  }, [featuredPhotos, developedPhotos, markPhotoDeveloped]);
 
   const startDevelop = (photo: Photo) => {
     if (isDeveloped(photo.id)) {
@@ -86,7 +87,7 @@ export function ActThreeVisionary() {
       });
     }, 30);
     return () => clearInterval(interval);
-  }, [developing]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [developing, markPhotoDeveloped]);
 
   // Lightbox navigation
   const allDeveloped = PHOTOS.filter((p) => isDeveloped(p.id));

@@ -67,6 +67,16 @@ export function GlassCard({
     setTransform("");
   }, []);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (onClick && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        onClick();
+      }
+    },
+    [onClick]
+  );
+
   const sharedProps = {
     className: cn(
       "relative overflow-hidden rounded-xl border transition-all duration-300",
@@ -81,6 +91,9 @@ export function GlassCard({
     onMouseMove: handleMouseMove,
     onMouseLeave: handleMouseLeave,
     onClick,
+    onKeyDown: onClick ? handleKeyDown : undefined,
+    tabIndex: onClick && as !== "button" ? 0 : undefined,
+    role: onClick && as !== "button" ? ("button" as const) : undefined,
   };
 
   const inner = (

@@ -20,8 +20,14 @@ export function Contact() {
 
     setStatus("sending");
 
+    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+    if (!endpoint) {
+      setStatus("error");
+      return;
+    }
+
     try {
-      const res = await fetch("https://formspree.io/f/mzzbqzpn", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
@@ -153,6 +159,7 @@ export function Contact() {
           <div className="grid gap-3 sm:grid-cols-3">
             <a
               href="mailto:saigoutham.vaddi@gmail.com"
+              aria-label="Send email to saigoutham.vaddi@gmail.com"
               className="flex items-center gap-3 rounded-lg border border-border bg-bg-card/30 p-4 transition-all hover:border-accent/30 focus-visible:border-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
             >
               <Mail size={18} className="text-accent" aria-hidden="true" />
@@ -168,6 +175,7 @@ export function Contact() {
               href="https://linkedin.com/in/saigouthamvaddi/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Visit Goutham Vaddi's LinkedIn profile"
               className="flex items-center gap-3 rounded-lg border border-border bg-bg-card/30 p-4 transition-all hover:border-accent/30 focus-visible:border-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
             >
               <Linkedin size={18} className="text-accent" aria-hidden="true" />
@@ -183,6 +191,7 @@ export function Contact() {
 
             <a
               href="tel:+919494140609"
+              aria-label="Call +91 9494140609"
               className="flex items-center gap-3 rounded-lg border border-border bg-bg-card/30 p-4 transition-all hover:border-accent/30 focus-visible:border-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
             >
               <Phone size={18} className="text-accent" aria-hidden="true" />

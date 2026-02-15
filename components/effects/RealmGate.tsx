@@ -20,12 +20,10 @@ export function RealmGate({ realmIndex }: RealmGateProps) {
   const [progress, setProgress] = useState(0);
 
   const realm = REALMS[realmIndex];
-  if (!realm) return null;
-
   const actLabel = `ACT ${["I", "II", "III"][realmIndex]}`;
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    if (!realm) return;
     const section = sectionRef.current;
     if (!section) return;
 
@@ -99,6 +97,8 @@ export function RealmGate({ realmIndex }: RealmGateProps) {
       trigger.kill();
     };
   }, [realm]);
+
+  if (!realm) return null;
 
   // Gate visual progress
   const gateOpacity = Math.min(1, progress * 3);

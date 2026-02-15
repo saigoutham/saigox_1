@@ -355,6 +355,12 @@ body {
 }
 
 /* ═══ Reduced Motion ═══ */
+@media (max-height: 500px) {
+  .scroll-indicator-hide {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

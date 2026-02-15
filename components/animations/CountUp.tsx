@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -24,16 +24,16 @@ export function CountUp({
   className = "",
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || hasAnimated) return;
+    if (!el || hasAnimated.current) return;
 
     // Respect reduced-motion preference — show final value instantly
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      setHasAnimated(true);
+      hasAnimated.current = true;
       el.textContent =
         prefix +
         (decimals > 0
@@ -50,7 +50,7 @@ export function CountUp({
       start: "top 85%",
       once: true,
       onEnter: () => {
-        setHasAnimated(true);
+        hasAnimated.current = true;
         gsap.to(obj, {
           value: end,
           duration,
@@ -70,7 +70,7 @@ export function CountUp({
     return () => {
       trigger.kill();
     };
-  }, [end, prefix, suffix, duration, decimals, hasAnimated]);
+  }, [end, prefix, suffix, duration, decimals]);
 
   return (
     <span ref={ref} className={className}>
