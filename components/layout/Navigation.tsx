@@ -7,9 +7,9 @@ import { useRealmStore } from "@/store/useRealmStore";
 import { REALMS } from "@/data/realms";
 
 const NAV_ACTS = [
-  { label: "I · Foundation", href: "#act-1", realmIndex: 0 },
-  { label: "II · Strategist", href: "#act-2", realmIndex: 1 },
-  { label: "III · Visionary", href: "#act-3", realmIndex: 2 },
+  { label: "I · Strategist", href: "#act-1", realmIndex: 0 },
+  { label: "II · Visionary", href: "#act-2", realmIndex: 1 },
+  { label: "III · Foundation", href: "#act-3", realmIndex: 2 },
   { label: "Contact", href: "#contact", realmIndex: -1 },
 ];
 
@@ -84,9 +84,9 @@ export function Navigation() {
   const getActiveAccent = () => {
     const active = NAV_ACTS.find((item) => item.href === activeSection);
     if (active && active.realmIndex >= 0) {
-      return REALMS[active.realmIndex]?.accent || "#00d4ff";
+      return REALMS[active.realmIndex]?.accent || "#FF6B6B";
     }
-    return "#00d4ff";
+    return "#FF6B6B";
   };
 
   const accent = getActiveAccent();
@@ -125,8 +125,8 @@ export function Navigation() {
               const isActive = activeSection === item.href;
               const itemAccent =
                 item.realmIndex >= 0
-                  ? REALMS[item.realmIndex]?.accent || "#00d4ff"
-                  : "#00d4ff";
+                  ? REALMS[item.realmIndex]?.accent || "#FF6B6B"
+                  : "#FF6B6B";
 
               return (
                 <button
@@ -199,8 +199,8 @@ export function Navigation() {
             const isActive = activeSection === item.href;
             const itemAccent =
               item.realmIndex >= 0
-                ? REALMS[item.realmIndex]?.accent || "#00d4ff"
-                : "#00d4ff";
+                ? REALMS[item.realmIndex]?.accent || "#FF6B6B"
+                : "#FF6B6B";
 
             return (
               <button

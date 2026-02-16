@@ -3,8 +3,7 @@ import type { CharacterStat } from "@/lib/types";
 export const CHARACTER_STATS: CharacterStat[] = [
   {
     name: "Intelligence",
-    value: 9,
-    maxValue: 10,
+    grade: "S",
     description: "Deep technical foundation in data engineering and systems design",
     evidence: [
       "NIT Trichy CGPA 9.27 with Honors",
@@ -15,20 +14,18 @@ export const CHARACTER_STATS: CharacterStat[] = [
   },
   {
     name: "Strategy",
-    value: 9,
-    maxValue: 10,
+    grade: "S",
     description: "Monetization architecture and data-driven revenue optimization",
     evidence: [
       "$80M+ annual revenue managed",
       "30+ player cohorts designed",
       "D2C store: 0%→5% revenue share",
     ],
-    color: "#00d4ff",
+    color: "#FF6B6B",
   },
   {
     name: "Leadership",
-    value: 8,
-    maxValue: 10,
+    grade: "A",
     description: "Cross-functional team leadership and entrepreneurial execution",
     evidence: [
       "CEO of Hel(l)Mark — 7-member team",
@@ -39,8 +36,7 @@ export const CHARACTER_STATS: CharacterStat[] = [
   },
   {
     name: "Execution",
-    value: 9,
-    maxValue: 10,
+    grade: "S",
     description: "Rapid experimentation and operational excellence",
     evidence: [
       "50+ A/B tests executed",
@@ -51,8 +47,7 @@ export const CHARACTER_STATS: CharacterStat[] = [
   },
   {
     name: "Creativity",
-    value: 7,
-    maxValue: 10,
+    grade: "B",
     description: "Visual storytelling through wildlife and macro photography",
     evidence: [
       "14 wildlife/macro photographs",

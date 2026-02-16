@@ -4,7 +4,7 @@ export const SKILL_BRANCHES: SkillBranch[] = [
   {
     id: "monetization",
     name: "Monetization Systems",
-    color: "#00d4ff",
+    color: "#FF6B6B",
     nodes: [
       {
         id: "spin-wheel",

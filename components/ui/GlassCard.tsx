@@ -7,7 +7,7 @@ type Rarity = "common" | "rare" | "epic" | "legendary";
 
 const RARITY_COLORS: Record<Rarity, { border: string; glow: string }> = {
   common: { border: "rgba(161, 161, 161, 0.2)", glow: "rgba(161, 161, 161, 0.1)" },
-  rare: { border: "rgba(0, 212, 255, 0.3)", glow: "rgba(0, 212, 255, 0.15)" },
+  rare: { border: "rgba(255, 107, 107, 0.3)", glow: "rgba(255, 107, 107, 0.15)" },
   epic: { border: "rgba(168, 85, 247, 0.3)", glow: "rgba(168, 85, 247, 0.15)" },
   legendary: { border: "rgba(245, 158, 11, 0.3)", glow: "rgba(245, 158, 11, 0.15)" },
 };

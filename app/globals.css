@@ -10,9 +10,9 @@
   --color-text-primary: #fafafa;
   --color-text-secondary: #a1a1a1;
   --color-text-muted: #666666;
-  --color-accent: #00d4ff;
-  --color-accent-dim: #00d4ff22;
-  --color-accent-glow: #00d4ff44;
+  --color-accent: #FF6B6B;
+  --color-accent-dim: #FF6B6B22;
+  --color-accent-glow: #FF6B6B44;
   --color-amber: #f59e0b;
   --color-green: #10b981;
   --color-red: #ef4444;
@@ -93,6 +93,14 @@ body {
   background: rgba(17, 17, 17, 0.8);
 }
 
+.glass-enhanced {
+  background: rgba(17, 17, 17, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
 /* ═══ Gradient Orbs (for Hero background) ═══ */
 .gradient-orb {
   position: absolute;
@@ -134,7 +142,7 @@ body {
 }
 
 .text-gradient-accent {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #00a0cc 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #E85555 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -155,15 +163,6 @@ body {
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.04em;
-}
-
-/* ═══ Darkroom ═══ */
-.darkroom-overlay {
-  background: rgba(20, 2, 2, 0.96);
-}
-
-.darkroom-safelight {
-  background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
 }
 
 /* ═══ Scroll Indicator ═══ */
@@ -194,15 +193,15 @@ body {
 
 /* ═══ Realm Accent (changes per act) ═══ */
 :root {
-  --realm-accent: #00d4ff;
-  --realm-accent-dim: #00d4ff22;
-  --realm-accent-glow: #00d4ff44;
+  --realm-accent: #FF6B6B;
+  --realm-accent-dim: #FF6B6B22;
+  --realm-accent-glow: #FF6B6B44;
 }
 
 /* ═══ Rarity Colors ═══ */
 :root {
   --rarity-common: #a1a1a1;
-  --rarity-rare: #00d4ff;
+  --rarity-rare: #FF6B6B;
   --rarity-epic: #a855f7;
   --rarity-legendary: #f59e0b;
 }
@@ -263,22 +262,6 @@ body {
   animation: glow-pulse 2s ease-in-out infinite;
 }
 
-/* ═══ Relic Glow ═══ */
-.relic-discovered {
-  box-shadow: 0 0 15px var(--realm-accent-dim), 0 0 30px transparent;
-  border-color: var(--realm-accent) !important;
-}
-
-.relic-undiscovered {
-  opacity: 0.5;
-  filter: grayscale(0.5);
-}
-
-.relic-undiscovered:hover {
-  opacity: 0.8;
-  filter: grayscale(0);
-}
-
 /* ═══ Realm Gate ═══ */
 .realm-gate {
   background: var(--color-bg);
@@ -289,33 +272,6 @@ body {
 .realm-gate-border {
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
-}
-
-/* ═══ Data Pipeline Flow ═══ */
-@keyframes pipeline-flow {
-  0% { background-position: 0 0; }
-  100% { background-position: 40px 0; }
-}
-
-.pipeline-line {
-  height: 2px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--realm-accent) 0px,
-    var(--realm-accent) 10px,
-    transparent 10px,
-    transparent 20px
-  );
-  background-size: 40px 2px;
-  animation: pipeline-flow 1s linear infinite;
-}
-
-.pipeline-node {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--realm-accent);
-  box-shadow: 0 0 10px var(--realm-accent-glow);
 }
 
 /* ═══ Skill Node ═══ */
@@ -367,9 +323,6 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  .pipeline-line {
-    animation: none;
   }
   .glow-pulse {
     animation: none;

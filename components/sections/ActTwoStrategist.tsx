@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { useRealmStore } from "@/store/useRealmStore";
 import { SKILL_BRANCHES } from "@/data/skills";
 import { MISSIONS } from "@/data/missions";
 import { cn } from "@/lib/cn";
-import type { SkillNode } from "@/lib/types";
 
 // Rarity by company
 const MISSION_RARITY: Record<string, "rare" | "epic" | "legendary"> = {
@@ -17,28 +15,17 @@ const MISSION_RARITY: Record<string, "rare" | "epic" | "legendary"> = {
 };
 
 export function ActTwoStrategist() {
-  const skillsRevealed = useRealmStore((s) => s.visitor.skillsRevealed);
-  const revealSkill = useRealmStore((s) => s.revealSkill);
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
   const [abVariant, setAbVariant] = useState<"A" | "B">("A");
-
-  const handleNodeClick = useCallback(
-    (node: SkillNode) => {
-      revealSkill(node.id);
-      setExpandedNode((prev) => (prev === node.id ? null : node.id));
-    },
-    [revealSkill]
-  );
-
-  const allNodes = SKILL_BRANCHES.flatMap((b) => b.nodes);
+  const [expandedMission, setExpandedMission] = useState<string | null>(null);
 
   return (
-    <section id="act-2" className="relative px-6 py-32">
+    <section id="act-1" className="relative px-6 py-32">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <ScrollReveal>
           <div className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Act II
+            Act I
           </div>
           <h2 className="mb-2 font-sans text-3xl font-bold text-text-primary md:text-4xl">
             The Strategist
@@ -46,28 +33,11 @@ export function ActTwoStrategist() {
           <p className="mb-4 font-mono text-sm text-text-muted">
             The Monetization War Room
           </p>
-          <p className="mb-8 max-w-lg text-sm leading-relaxed text-text-secondary">
+          <p className="mb-12 max-w-lg text-sm leading-relaxed text-text-secondary">
             Architecting revenue systems for $80M+ mobile gaming titles. From
             player segmentation to LiveOps festivals, every metric tells a
             story.
           </p>
-        </ScrollReveal>
-
-        {/* Skill counter */}
-        <ScrollReveal>
-          <div className="mb-8 flex items-center gap-4">
-            <span className="font-mono text-xs text-text-muted">
-              {skillsRevealed.length}/{allNodes.length} Skills Revealed
-            </span>
-            <div className="h-1 w-32 overflow-hidden rounded-full bg-border">
-              <div
-                className="h-full rounded-full bg-accent transition-all duration-500"
-                style={{
-                  width: `${(skillsRevealed.length / allNodes.length) * 100}%`,
-                }}
-              />
-            </div>
-          </div>
         </ScrollReveal>
 
         {/* ═══ SKILL TREE ═══ */}
@@ -78,9 +48,8 @@ export function ActTwoStrategist() {
             </div>
           </ScrollReveal>
 
-          {/* SVG Skill Tree */}
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-xl border border-accent/10 bg-bg-card/30 p-6 md:p-10">
+            <div className="glass-enhanced relative overflow-hidden rounded-xl p-6 md:p-10">
               {/* Center node */}
               <div className="mb-8 text-center">
                 <div className="mx-auto inline-flex items-center justify-center rounded-full border-2 border-accent bg-accent/10 px-6 py-3">
@@ -93,9 +62,9 @@ export function ActTwoStrategist() {
               {/* Branches */}
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {SKILL_BRANCHES.map((branch) => (
-                  <div key={branch.id}>
+                  <div key={branch.id} className="flex flex-col">
                     {/* Branch header */}
-                    <div className="mb-3 flex items-center gap-2">
+                    <div className="mb-3 flex h-8 items-center gap-2">
                       <div
                         className="h-2 w-2 rounded-full"
                         style={{ backgroundColor: branch.color }}
@@ -108,24 +77,18 @@ export function ActTwoStrategist() {
                       </span>
                     </div>
 
-                    {/* Nodes */}
-                    <div className="space-y-3">
+                    {/* Nodes - always visible */}
+                    <div className="flex-1 space-y-3">
                       {branch.nodes.map((node) => {
-                        const isRevealed = skillsRevealed.includes(node.id);
                         const isExpanded = expandedNode === node.id;
 
                         return (
                           <GlassCard
                             key={node.id}
-                            rarity={isRevealed ? "rare" : "common"}
-                            tilt={isRevealed}
-                            glow={isRevealed}
-                            onClick={() => handleNodeClick(node)}
-                            as="button"
-                            className={cn(
-                              "skill-node w-full cursor-pointer p-4 text-left",
-                              !isRevealed && "opacity-60"
-                            )}
+                            rarity="rare"
+                            tilt
+                            glow
+                            className="skill-node min-h-[120px] w-full p-4 text-left"
                           >
                             <div className="flex items-start justify-between">
                               <h4 className="font-sans text-sm font-semibold text-text-primary">
@@ -134,24 +97,30 @@ export function ActTwoStrategist() {
                               <div
                                 className="h-2 w-2 shrink-0 rounded-full"
                                 style={{
-                                  backgroundColor: isRevealed
-                                    ? branch.color
-                                    : "var(--color-border)",
-                                  boxShadow: isRevealed
-                                    ? `0 0 8px ${branch.color}`
-                                    : "none",
+                                  backgroundColor: branch.color,
+                                  boxShadow: `0 0 8px ${branch.color}`,
                                 }}
                               />
                             </div>
 
-                            {isRevealed && (
-                              <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
-                                {node.subtitle}
-                              </p>
-                            )}
+                            <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
+                              {node.subtitle}
+                            </p>
+
+                            {/* View metrics toggle */}
+                            <button
+                              onClick={() =>
+                                setExpandedNode(
+                                  isExpanded ? null : node.id
+                                )
+                              }
+                              className="mt-2 font-mono text-[10px] text-accent/70 transition-colors hover:text-accent"
+                            >
+                              {isExpanded ? "Hide metrics ▲" : "View metrics ▼"}
+                            </button>
 
                             {/* Expanded metrics */}
-                            {isRevealed && isExpanded && (
+                            {isExpanded && (
                               <div className="mt-3 grid grid-cols-2 gap-2">
                                 {node.metrics.map((m, mi) => (
                                   <div
@@ -170,12 +139,6 @@ export function ActTwoStrategist() {
                                   </div>
                                 ))}
                               </div>
-                            )}
-
-                            {!isRevealed && (
-                              <p className="mt-1 font-mono text-[10px] text-text-muted/30">
-                                Click to reveal
-                              </p>
                             )}
                           </GlassCard>
                         );
@@ -278,58 +241,116 @@ export function ActTwoStrategist() {
           </ScrollReveal>
         </div>
 
-        {/* ═══ CASE STUDIES ═══ */}
+        {/* ═══ CASE STUDIES — MAIN ATTRACTION ═══ */}
         <div>
           <ScrollReveal>
-            <div className="mb-6 font-mono text-[10px] uppercase tracking-widest text-accent/60">
+            <div className="mb-8 font-mono text-[10px] uppercase tracking-widest text-accent/60">
               Case Studies
             </div>
           </ScrollReveal>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-8">
             {MISSIONS.map((mission, i) => {
               const rarity = MISSION_RARITY[mission.company] || "common";
+              const isExpanded = expandedMission === mission.slug;
 
               return (
                 <ScrollReveal key={mission.slug} delay={i * 0.1}>
-                  <GlassCard
-                    rarity={rarity}
-                    className="flex h-full flex-col p-6"
-                  >
-                    {/* Codename */}
-                    <div className="mb-1 font-mono text-[10px] uppercase tracking-widest text-accent">
-                      {mission.codename}
+                  <GlassCard rarity={rarity} tilt={false} className="p-8 md:p-10">
+                    {/* Top row: codename + company/period */}
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-accent">
+                        {mission.codename}
+                      </div>
+                      <div className="font-mono text-xs text-text-muted">
+                        {mission.company} · {mission.period}
+                      </div>
                     </div>
 
-                    {/* Title & Company */}
-                    <h3 className="mb-1 font-sans text-lg font-bold text-text-primary">
+                    {/* Title */}
+                    <h3 className="mb-4 font-sans text-2xl font-bold text-text-primary md:text-3xl">
                       {mission.title}
                     </h3>
-                    <div className="mb-4 font-mono text-xs text-text-muted">
-                      {mission.company} · {mission.period}
-                    </div>
 
                     {/* Brief */}
-                    <p className="mb-6 text-xs leading-relaxed text-text-secondary">
+                    <p className="mb-8 max-w-3xl text-sm leading-relaxed text-text-secondary">
                       {mission.brief}
                     </p>
 
-                    {/* Key Metrics */}
-                    <div className="mb-6 mt-auto grid grid-cols-2 gap-3">
-                      {mission.results.slice(0, 4).map((result, ri) => (
-                        <div key={ri}>
-                          <div className="font-sans text-xl font-bold text-text-primary">
-                            {result.value}
-                          </div>
-                          <div className="text-[10px] text-text-muted">
-                            {result.metric}
-                          </div>
+                    {/* Two-column: Approach + Results */}
+                    <div className="grid gap-8 md:grid-cols-2">
+                      {/* Approach */}
+                      <div>
+                        <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-text-muted">
+                          Approach
                         </div>
-                      ))}
+                        <ul className="space-y-2">
+                          {mission.approach.map((step, j) => (
+                            <li
+                              key={j}
+                              className="flex gap-2 text-xs leading-relaxed text-text-secondary"
+                            >
+                              <span className="mt-0.5 shrink-0 text-accent/50">
+                                {j + 1}.
+                              </span>
+                              {step}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Results */}
+                      <div>
+                        <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-text-muted">
+                          Results
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          {mission.results.map((result, ri) => (
+                            <div
+                              key={ri}
+                              className="rounded-lg border border-border/30 bg-bg/50 p-4"
+                            >
+                              <div className="font-sans text-2xl font-bold text-text-primary">
+                                {result.value}
+                              </div>
+                              <div className="text-[10px] text-text-muted">
+                                {result.metric}
+                              </div>
+                              <div className="mt-1 text-[10px] text-text-secondary">
+                                {result.description}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Learnings (collapsible) */}
+                    <div className="mt-6">
+                      <button
+                        onClick={() =>
+                          setExpandedMission(isExpanded ? null : mission.slug)
+                        }
+                        className="font-mono text-[10px] uppercase tracking-widest text-text-muted/50 transition-colors hover:text-text-secondary"
+                      >
+                        {isExpanded ? "Hide Learnings ▲" : "Key Learnings ▼"}
+                      </button>
+                      {isExpanded && (
+                        <ul className="mt-3 space-y-1.5">
+                          {mission.learnings.map((l, j) => (
+                            <li
+                              key={j}
+                              className="flex gap-2 text-xs text-text-secondary"
+                            >
+                              <span className="text-accent/40">→</span> {l}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
 
                     {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
+                    <div className="mt-6 flex flex-wrap gap-2">
                       {mission.tags.map((tag) => (
                         <span
                           key={tag}

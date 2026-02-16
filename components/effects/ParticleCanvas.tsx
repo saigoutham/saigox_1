@@ -66,7 +66,7 @@ export function ParticleCanvas() {
       const accent =
         getComputedStyle(document.documentElement)
           .getPropertyValue("--realm-accent")
-          .trim() || "#00d4ff";
+          .trim() || "#FF6B6B";
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];

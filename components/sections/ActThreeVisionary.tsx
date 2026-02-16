@@ -1,16 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { useRealmStore } from "@/store/useRealmStore";
 import { PHOTOS } from "@/data/photos";
 import { AWARDS } from "@/data/awards";
 import { TIMELINE } from "@/lib/constants";
 import { cn } from "@/lib/cn";
 import {
-  Camera,
   X,
   ChevronLeft,
   ChevronRight,
@@ -31,85 +29,39 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Award,
 };
 
-// Timeline entries for Act III (business + IIM)
-const ACT_THREE_TIMELINE = TIMELINE.filter(
-  (e) => e.category === "business" || (e.category === "education" && e.company === "IIM Lucknow")
+// Timeline entries for Act II (business + IIM)
+const ACT_TWO_TIMELINE = TIMELINE.filter(
+  (e) =>
+    e.category === "business" ||
+    (e.category === "education" && e.company === "IIM Lucknow")
 );
 
 export function ActThreeVisionary() {
-  const [developing, setDeveloping] = useState<Photo | null>(null);
-  const [devProgress, setDevProgress] = useState(0);
-  const [devComplete, setDevComplete] = useState(false);
   const [lightboxPhoto, setLightboxPhoto] = useState<Photo | null>(null);
-
-  const developedPhotos = useRealmStore((s) => s.visitor.developedPhotos);
-  const markPhotoDeveloped = useRealmStore((s) => s.markPhotoDeveloped);
-
-  const isDeveloped = (id: string) => developedPhotos.includes(id);
 
   const featuredPhotos = PHOTOS.filter((p) => p.featured);
   const otherPhotos = PHOTOS.filter((p) => !p.featured);
-
-  // Auto-develop featured photos (runs once on mount)
-  const hasAutoDevRef = useRef(false);
-  useEffect(() => {
-    if (hasAutoDevRef.current) return;
-    hasAutoDevRef.current = true;
-    featuredPhotos.forEach((p) => {
-      if (!developedPhotos.includes(p.id)) {
-        markPhotoDeveloped(p.id);
-      }
-    });
-  }, [featuredPhotos, developedPhotos, markPhotoDeveloped]);
-
-  const startDevelop = (photo: Photo) => {
-    if (isDeveloped(photo.id)) {
-      setLightboxPhoto(photo);
-      return;
-    }
-    setDeveloping(photo);
-    setDevProgress(0);
-    setDevComplete(false);
-  };
-
-  // Develop animation
-  useEffect(() => {
-    if (!developing) return;
-    const interval = setInterval(() => {
-      setDevProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setDevComplete(true);
-          markPhotoDeveloped(developing.id);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 30);
-    return () => clearInterval(interval);
-  }, [developing, markPhotoDeveloped]);
+  const allPhotos = [...featuredPhotos, ...otherPhotos];
 
   // Lightbox navigation
-  const allDeveloped = PHOTOS.filter((p) => isDeveloped(p.id));
   const lightboxIndex = lightboxPhoto
-    ? allDeveloped.findIndex((p) => p.id === lightboxPhoto.id)
+    ? allPhotos.findIndex((p) => p.id === lightboxPhoto.id)
     : -1;
 
   const navigateLightbox = useCallback(
     (dir: -1 | 1) => {
       if (lightboxIndex < 0) return;
       const next = lightboxIndex + dir;
-      if (next >= 0 && next < allDeveloped.length) {
-        setLightboxPhoto(allDeveloped[next]);
+      if (next >= 0 && next < allPhotos.length) {
+        setLightboxPhoto(allPhotos[next]);
       }
     },
-    [lightboxIndex, allDeveloped]
+    [lightboxIndex, allPhotos]
   );
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setDeveloping(null);
         setLightboxPhoto(null);
       }
       if (e.key === "ArrowLeft") navigateLightbox(-1);
@@ -119,15 +71,13 @@ export function ActThreeVisionary() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [navigateLightbox]);
 
-  const allPhotos = [...featuredPhotos, ...otherPhotos];
-
   return (
-    <section id="act-3" className="relative px-6 py-32">
+    <section id="act-2" className="relative px-6 py-32">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <ScrollReveal>
           <div className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-purple">
-            Act III
+            Act II
           </div>
           <h2 className="mb-2 font-sans text-3xl font-bold text-text-primary md:text-4xl">
             The Visionary
@@ -138,9 +88,9 @@ export function ActThreeVisionary() {
         </ScrollReveal>
 
         {/* ═══ SPLIT LAYOUT ═══ */}
-        <div className="grid gap-16 lg:grid-cols-2">
+        <div className="grid gap-12 lg:grid-cols-2">
           {/* LEFT — The Operator */}
-          <div>
+          <div className="flex flex-col">
             <ScrollReveal>
               <div className="mb-8">
                 <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-purple/60">
@@ -155,9 +105,9 @@ export function ActThreeVisionary() {
 
             {/* Leadership timeline */}
             <div className="mb-12 space-y-4">
-              {ACT_THREE_TIMELINE.map((entry, i) => (
+              {ACT_TWO_TIMELINE.map((entry, i) => (
                 <ScrollReveal key={i} delay={i * 0.1}>
-                  <GlassCard rarity="epic" tilt={false} className="p-5">
+                  <GlassCard rarity="epic" tilt={false} className="h-full p-5">
                     <div className="mb-2 flex flex-wrap items-center gap-2">
                       <h3 className="font-sans text-base font-semibold text-text-primary">
                         {entry.company}
@@ -212,7 +162,7 @@ export function ActThreeVisionary() {
                     <GlassCard
                       rarity="legendary"
                       tilt={false}
-                      className="flex h-full flex-col p-4"
+                      className="flex h-full min-h-[160px] flex-col p-4"
                     >
                       <Icon
                         size={20}
@@ -241,178 +191,60 @@ export function ActThreeVisionary() {
           </div>
 
           {/* RIGHT — The Creator */}
-          <div>
+          <div className="flex flex-col">
             <ScrollReveal>
               <div className="mb-8">
                 <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-purple/60">
                   The Creator
                 </div>
-                <p className="mb-4 text-sm leading-relaxed text-text-secondary">
-                  Click undeveloped photos to reveal them in the darkroom.
+                <p className="text-sm leading-relaxed text-text-secondary">
+                  Wildlife and macro photography across Indian wilderness.
                 </p>
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-xs text-text-muted">
-                    {developedPhotos.length}/{PHOTOS.length} Artifacts Collected
-                  </span>
-                  <div className="h-1 w-24 overflow-hidden rounded-full bg-border">
-                    <div
-                      className="h-full rounded-full bg-purple transition-all duration-500"
-                      style={{
-                        width: `${(developedPhotos.length / PHOTOS.length) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
               </div>
             </ScrollReveal>
 
-            {/* Photo grid */}
+            {/* Photo grid - all photos always visible */}
             <div className="columns-1 gap-3 sm:columns-2">
-              {allPhotos.map((photo) => {
-                const developed = isDeveloped(photo.id);
-                return (
-                  <ScrollReveal key={photo.id}>
-                    <button
-                      onClick={() => startDevelop(photo)}
-                      className={cn(
-                        "group relative mb-3 w-full overflow-hidden rounded-lg border transition-all duration-300",
-                        developed
-                          ? "border-border hover:border-purple/30"
-                          : "border-purple/10 hover:border-purple/30"
-                      )}
+              {allPhotos.map((photo, i) => (
+                <ScrollReveal key={photo.id}>
+                  <button
+                    onClick={() => setLightboxPhoto(photo)}
+                    className="group relative mb-3 w-full overflow-hidden rounded-lg border border-border transition-all duration-300 hover:border-purple/30"
+                  >
+                    <div
+                      className="relative overflow-hidden"
+                      style={{
+                        aspectRatio: `${photo.width}/${photo.height}`,
+                      }}
                     >
-                      <div
-                        className="relative overflow-hidden"
-                        style={{
-                          aspectRatio: `${photo.width}/${photo.height}`,
-                        }}
-                      >
-                        {developed ? (
-                          <Image
-                            src={photo.src}
-                            alt={photo.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1024px) calc(50vw - 48px), calc(25vw - 24px)"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-bg-elevated">
-                            <Camera
-                              size={24}
-                              className="text-purple/20"
-                            />
-                          </div>
-                        )}
+                      <Image
+                        src={photo.src}
+                        alt={photo.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) calc(100vw - 48px), (max-width: 1024px) calc(50vw - 48px), calc(25vw - 24px)"
+                        loading={i < 4 ? undefined : "lazy"}
+                      />
 
-                        {/* Hover overlay */}
-                        {developed && (
-                          <div className="absolute inset-0 flex items-end bg-gradient-to-t from-bg/80 via-transparent opacity-0 transition-opacity group-hover:opacity-100">
-                            <div className="p-3">
-                              <div className="font-sans text-xs font-semibold text-text-primary">
-                                {photo.title}
-                              </div>
-                              <div className="font-mono text-[9px] text-text-muted">
-                                {photo.category} · {photo.location}
-                              </div>
-                            </div>
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-bg/80 via-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                        <div className="p-3">
+                          <div className="font-sans text-xs font-semibold text-text-primary">
+                            {photo.title}
                           </div>
-                        )}
-                      </div>
-
-                      {!developed && (
-                        <div className="flex items-center justify-between bg-bg-elevated/50 px-3 py-1.5">
-                          <span className="font-mono text-[9px] uppercase tracking-wider text-text-muted">
-                            Undeveloped
-                          </span>
-                          <span className="font-mono text-[9px] text-purple/60">
-                            Click to develop
-                          </span>
+                          <div className="font-mono text-[9px] text-text-muted">
+                            {photo.category} · {photo.location}
+                          </div>
                         </div>
-                      )}
-                    </button>
-                  </ScrollReveal>
-                );
-              })}
+                      </div>
+                    </div>
+                  </button>
+                </ScrollReveal>
+              ))}
             </div>
           </div>
         </div>
       </div>
-
-      {/* ═══ DARKROOM OVERLAY ═══ */}
-      {developing && (
-        <div
-          className="darkroom-overlay fixed inset-0 z-50 flex items-center justify-center"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Photo darkroom"
-        >
-          <button
-            onClick={() => setDeveloping(null)}
-            className="absolute right-4 top-4 z-10 text-text-muted transition-colors hover:text-text-primary"
-            aria-label="Close darkroom"
-          >
-            <X size={24} />
-          </button>
-
-          <div className="flex flex-col items-center gap-6 px-4">
-            <div className="relative h-[60vh] w-[80vw] max-w-2xl overflow-hidden rounded-lg">
-              <Image
-                src={developing.src}
-                alt={developing.title}
-                fill
-                className="object-contain"
-                style={{
-                  clipPath: `circle(${devProgress}% at 50% 50%)`,
-                  filter:
-                    devProgress < 100
-                      ? `saturate(${0.3 + devProgress * 0.007}) brightness(${0.5 + devProgress * 0.005})`
-                      : "none",
-                  transition: "filter 0.3s ease",
-                }}
-                sizes="80vw"
-                priority
-              />
-              <div
-                className="darkroom-safelight pointer-events-none absolute inset-0"
-                style={{ opacity: 1 - devProgress / 100 }}
-              />
-            </div>
-
-            {!devComplete ? (
-              <div className="text-center">
-                <div className="mb-2 font-mono text-sm uppercase tracking-widest text-red">
-                  Developing...
-                </div>
-                <div className="h-1 w-48 overflow-hidden rounded-full bg-border">
-                  <div
-                    className="h-full rounded-full bg-red transition-all"
-                    style={{ width: `${devProgress}%` }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="animate-fade-in-up text-center">
-                <div className="mb-1 font-mono text-sm uppercase tracking-widest text-green">
-                  Developed
-                </div>
-                <div className="font-sans text-lg font-semibold text-text-primary">
-                  {developing.title}
-                </div>
-                <div className="font-mono text-xs text-text-muted">
-                  {developing.location} · {developing.date} ·{" "}
-                  {developing.category}
-                </div>
-                <button
-                  onClick={() => setDeveloping(null)}
-                  className="mt-4 font-mono text-xs uppercase tracking-wider text-text-muted hover:text-text-primary"
-                >
-                  [Close]
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ═══ LIGHTBOX ═══ */}
       {lightboxPhoto && (
@@ -443,7 +275,7 @@ export function ActThreeVisionary() {
               <ChevronLeft size={24} />
             </button>
           )}
-          {lightboxIndex < allDeveloped.length - 1 && (
+          {lightboxIndex < allPhotos.length - 1 && (
             <button
               onClick={(e) => {
                 e.stopPropagation();

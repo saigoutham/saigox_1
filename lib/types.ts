@@ -44,7 +44,6 @@ export interface Award {
 
 // ═══ Visitor Store ═══
 export interface Visitor {
-  developedPhotos: string[];
   hasSeenPreloader: boolean;
 }
 
@@ -108,8 +107,7 @@ export interface SkillBranch {
 // ═══ Character Stat ═══
 export interface CharacterStat {
   name: string;
-  value: number;
-  maxValue: number;
+  grade: "S" | "A" | "B" | "C";
   description: string;
   evidence: string[];
   color: string;
@@ -117,10 +115,7 @@ export interface CharacterStat {
 
 // ═══ Realm Store ═══
 export interface RealmVisitor {
-  developedPhotos: string[];
   hasSeenPreloader: boolean;
-  relicsDiscovered: string[];
-  skillsRevealed: string[];
   discoveredEasterEggs: string[];
   soundEnabled: boolean;
   visitCount: number;

@@ -40,28 +40,29 @@ export default function HomePage() {
         {/* ═══ Realm Gate I ═══ */}
         <RealmGate realmIndex={0} />
 
-        {/* ═══ Act I: The Foundation ═══ */}
-        <ActOneFoundation />
+        {/* ═══ Act I: The Strategist ═══ */}
+        <ActTwoStrategist />
 
         {/* ═══ Realm Gate II ═══ */}
         <RealmGate realmIndex={1} />
 
-        {/* ═══ Act II: The Strategist ═══ */}
-        <ActTwoStrategist />
+        {/* ═══ Act II: The Visionary ═══ */}
+        <ActThreeVisionary />
 
         {/* ═══ Realm Gate III ═══ */}
         <RealmGate realmIndex={2} />
 
-        {/* ═══ Act III: The Visionary ═══ */}
-        <ActThreeVisionary />
+        {/* ═══ Act III: The Foundation ═══ */}
+        <ActOneFoundation />
 
-        {/* ═══ Character Stats ═══ */}
+        {/* ═══ Character Stats + Contact ═══ */}
         <div className="section-divider" />
-        <CharacterStats />
-
-        {/* ═══ Contact ═══ */}
-        <div className="section-divider" />
-        <Contact />
+        <section className="px-6 py-32">
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
+            <CharacterStats />
+            <Contact />
+          </div>
+        </section>
       </main>
       <Footer />
     </SmoothScrollProvider>

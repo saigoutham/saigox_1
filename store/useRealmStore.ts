@@ -4,16 +4,8 @@ import type { RealmVisitor } from "@/lib/types";
 
 interface RealmState {
   visitor: RealmVisitor;
-  // Photo actions
-  markPhotoDeveloped: (id: string) => boolean;
-  isDeveloped: (id: string) => boolean;
   // Preloader
   setPreloaderSeen: () => void;
-  // Realm progression
-  discoverRelic: (id: string) => void;
-  isRelicDiscovered: (id: string) => boolean;
-  revealSkill: (id: string) => void;
-  isSkillRevealed: (id: string) => boolean;
   // Easter eggs
   discoverEasterEgg: (id: string) => void;
   hasEasterEgg: (id: string) => boolean;
@@ -25,29 +17,10 @@ export const useRealmStore = create<RealmState>()(
   persist(
     (set, get) => ({
       visitor: {
-        developedPhotos: [],
         hasSeenPreloader: false,
-        relicsDiscovered: [],
-        skillsRevealed: [],
         discoveredEasterEggs: [],
         soundEnabled: false,
         visitCount: 0,
-      },
-
-      markPhotoDeveloped: (id: string) => {
-        const { visitor } = get();
-        if (visitor.developedPhotos.includes(id)) return false;
-        set({
-          visitor: {
-            ...visitor,
-            developedPhotos: [...visitor.developedPhotos, id],
-          },
-        });
-        return true;
-      },
-
-      isDeveloped: (id: string) => {
-        return get().visitor.developedPhotos.includes(id);
       },
 
       setPreloaderSeen: () => {
@@ -59,36 +32,6 @@ export const useRealmStore = create<RealmState>()(
             visitCount: visitor.visitCount + 1,
           },
         });
-      },
-
-      discoverRelic: (id: string) => {
-        const { visitor } = get();
-        if (visitor.relicsDiscovered.includes(id)) return;
-        set({
-          visitor: {
-            ...visitor,
-            relicsDiscovered: [...visitor.relicsDiscovered, id],
-          },
-        });
-      },
-
-      isRelicDiscovered: (id: string) => {
-        return get().visitor.relicsDiscovered.includes(id);
-      },
-
-      revealSkill: (id: string) => {
-        const { visitor } = get();
-        if (visitor.skillsRevealed.includes(id)) return;
-        set({
-          visitor: {
-            ...visitor,
-            skillsRevealed: [...visitor.skillsRevealed, id],
-          },
-        });
-      },
-
-      isSkillRevealed: (id: string) => {
-        return get().visitor.skillsRevealed.includes(id);
       },
 
       discoverEasterEgg: (id: string) => {
@@ -118,6 +61,18 @@ export const useRealmStore = create<RealmState>()(
     }),
     {
       name: "realm-of-goutham",
+      version: 2,
+      migrate: (persistedState: unknown) => {
+        const state = persistedState as Record<string, unknown>;
+        return {
+          visitor: {
+            hasSeenPreloader: (state?.visitor as Record<string, unknown>)?.hasSeenPreloader ?? false,
+            discoveredEasterEggs: (state?.visitor as Record<string, unknown>)?.discoveredEasterEggs ?? [],
+            soundEnabled: (state?.visitor as Record<string, unknown>)?.soundEnabled ?? false,
+            visitCount: (state?.visitor as Record<string, unknown>)?.visitCount ?? 0,
+          },
+        };
+      },
     }
   )
 );

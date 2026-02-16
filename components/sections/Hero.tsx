@@ -135,7 +135,7 @@ export function Hero() {
           <MagneticButton
             onClick={() =>
               document
-                .getElementById("act-3")
+                .getElementById("act-2")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
             className="w-full rounded-full border border-border px-8 py-3 font-mono text-sm uppercase tracking-wider text-text-secondary transition-all hover:border-text-muted hover:text-text-primary sm:w-auto"
