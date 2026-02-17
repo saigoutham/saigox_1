@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useSyncExternalStore } from "react";
 import { cn } from "@/lib/cn";
 
 type Rarity = "common" | "rare" | "epic" | "legendary";
@@ -34,11 +34,22 @@ export function GlassCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState("");
   const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
-
   const rarityColor = RARITY_COLORS[rarity];
+
+  // Detect hover capability (disable tilt/glow on touch devices)
+  const hasHover = useSyncExternalStore(
+    (cb) => {
+      const mql = window.matchMedia("(hover: hover)");
+      mql.addEventListener("change", cb);
+      return () => mql.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(hover: hover)").matches,
+    () => true // SSR fallback: assume hover capable
+  );
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
+      if (!hasHover) return;
       const card = cardRef.current;
       if (!card) return;
 
@@ -60,7 +71,7 @@ export function GlassCard({
         setGlowPos({ x, y });
       }
     },
-    [tilt, glow]
+    [tilt, glow, hasHover]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -79,7 +90,7 @@ export function GlassCard({
 
   const sharedProps = {
     className: cn(
-      "relative overflow-hidden rounded-xl border transition-all duration-300",
+      "glass-card relative overflow-hidden rounded-xl border transition-all duration-300",
       "bg-white/[0.03] backdrop-blur-xl",
       className
     ),

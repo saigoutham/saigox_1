@@ -13,12 +13,15 @@ export function CharacterStats() {
     <div>
       <ScrollReveal>
         <div className="mb-8 text-center lg:text-left">
-          <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-text-muted">
+          <div className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-accent">
             Character Sheet
           </div>
-          <h2 className="mb-1 font-sans text-3xl font-bold text-text-primary md:text-4xl">
+          <h2 className="mb-2 font-sans text-3xl font-bold text-text-primary md:text-4xl">
             Stats
           </h2>
+          <p className="font-mono text-sm text-text-muted">
+            Core Attributes
+          </p>
         </div>
       </ScrollReveal>
 
@@ -40,6 +43,7 @@ export function CharacterStats() {
               <div
                 key={stat.name}
                 className="group cursor-default rounded-lg border border-border/20 p-3 transition-all hover:border-border/40"
+                onClick={() => setHoveredStat(hoveredStat === i ? null : i)}
                 onMouseEnter={() => setHoveredStat(i)}
                 onMouseLeave={() => setHoveredStat(null)}
               >

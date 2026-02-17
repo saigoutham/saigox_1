@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/cn";
-import { Menu, X, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Volume2, VolumeX, Download } from "lucide-react";
 import { useRealmStore } from "@/store/useRealmStore";
 import { REALMS } from "@/data/realms";
 
@@ -133,7 +133,7 @@ export function Navigation() {
                   key={item.href}
                   onClick={() => scrollTo(item.href)}
                   className={cn(
-                    "relative font-mono text-[11px] uppercase tracking-widest transition-colors",
+                    "nav-item-glow relative font-mono text-[11px] uppercase tracking-widest transition-colors",
                     isActive
                       ? "text-text-primary"
                       : "text-text-muted hover:text-text-secondary"
@@ -155,22 +155,40 @@ export function Navigation() {
             })}
           </div>
 
-          {/* Desktop right side */}
-          <div className="hidden items-center gap-4 md:flex">
+          {/* Desktop right side — sound + divider + CTAs */}
+          <div className="hidden items-center gap-3 md:flex">
             <button
               onClick={toggleSound}
-              className="text-text-muted transition-colors hover:text-text-secondary"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-muted transition-colors hover:text-text-secondary"
               aria-label={soundEnabled ? "Mute sound" : "Enable sound"}
             >
               {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
             </button>
+
+            <div className="h-4 w-px bg-border/50" />
+
+            <button
+              onClick={() => scrollTo("#contact")}
+              className="rounded-full border border-accent bg-accent/10 px-5 py-2 font-mono text-[10px] uppercase tracking-wider text-accent transition-all hover:bg-accent/20"
+            >
+              Let&apos;s Connect
+            </button>
+
+            <a
+              href="/resume.pdf"
+              download
+              className="flex items-center gap-1.5 rounded-full border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-text-secondary transition-all hover:border-text-muted hover:text-text-primary"
+            >
+              <Download size={12} />
+              Resume
+            </a>
           </div>
 
           {/* Mobile burger */}
           <button
             ref={burgerRef}
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="text-text-primary md:hidden"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-primary md:hidden"
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
           >
@@ -211,7 +229,7 @@ export function Navigation() {
                   handleMobileClose();
                 }}
                 className={cn(
-                  "font-sans text-2xl font-medium transition-colors",
+                  "min-h-[44px] font-sans text-2xl font-medium transition-colors",
                   isActive ? "text-text-primary" : "text-text-secondary"
                 )}
                 style={isActive ? { color: itemAccent } : undefined}
@@ -221,9 +239,32 @@ export function Navigation() {
             );
           })}
 
+          {/* Mobile CTAs */}
+          <div className="mt-4 flex w-full max-w-xs flex-col gap-3 px-6">
+            <button
+              onClick={() => {
+                scrollTo("#contact");
+                handleMobileClose();
+              }}
+              className="w-full rounded-full border border-accent bg-accent/10 py-3 font-mono text-sm uppercase tracking-wider text-accent transition-all hover:bg-accent/20"
+            >
+              Let&apos;s Connect
+            </button>
+
+            <a
+              href="/resume.pdf"
+              download
+              onClick={() => handleMobileClose()}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-border py-3 font-mono text-sm uppercase tracking-wider text-text-secondary transition-all hover:border-text-muted hover:text-text-primary"
+            >
+              <Download size={14} />
+              Download Resume
+            </a>
+          </div>
+
           <button
             onClick={toggleSound}
-            className="mt-4 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted"
+            className="mt-2 flex min-h-[44px] items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted"
           >
             {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
             {soundEnabled ? "Sound On" : "Sound Off"}

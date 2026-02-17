@@ -50,16 +50,19 @@ export function Contact() {
   };
 
   return (
-    <div id="contact">
+    <section id="contact">
       {/* Section header */}
       <ScrollReveal>
-        <p className="mb-2 font-mono text-xs uppercase tracking-widest text-text-muted">
+        <div className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-accent">
           Get in Touch
-        </p>
-        <h2 className="mb-4 font-sans text-3xl font-bold text-text-primary md:text-4xl">
+        </div>
+        <h2 className="mb-2 font-sans text-3xl font-bold text-text-primary md:text-4xl">
           Let&apos;s Connect
         </h2>
-        <p className="mb-12 text-sm text-text-secondary">
+        <p className="mb-4 font-mono text-sm text-text-muted">
+          Open to Opportunities
+        </p>
+        <p className="mb-12 max-w-lg text-sm leading-relaxed text-text-secondary">
           Have a role, project, or collaboration in mind? I&apos;d love to
           hear from you.
         </p>
@@ -219,6 +222,6 @@ export function Contact() {
           </a>
         </div>
       </ScrollReveal>
-    </div>
+    </section>
   );
 }

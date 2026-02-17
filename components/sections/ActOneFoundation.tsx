@@ -24,7 +24,7 @@ const DOT_COLORS: Record<string, string> = {
 
 export function ActOneFoundation() {
   return (
-    <section id="act-3" className="relative px-6 py-32">
+    <section id="act-3" className="relative px-6 py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <ScrollReveal>
@@ -60,7 +60,7 @@ export function ActOneFoundation() {
                 className="mb-3 text-purple"
                 aria-hidden="true"
               />
-              <h3 className="font-sans text-xl font-bold text-text-primary">
+              <h3 className="font-sans text-lg font-semibold text-text-primary">
                 IIM Lucknow
               </h3>
               <p className="mt-1 font-mono text-xs text-green/70">
@@ -90,7 +90,7 @@ export function ActOneFoundation() {
                 className="mb-3 text-purple"
                 aria-hidden="true"
               />
-              <h3 className="font-sans text-xl font-bold text-text-primary">
+              <h3 className="font-sans text-lg font-semibold text-text-primary">
                 NIT Trichy
               </h3>
               <p className="mt-1 font-mono text-xs text-green/70">

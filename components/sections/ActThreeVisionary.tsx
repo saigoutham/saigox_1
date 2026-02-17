@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
@@ -36,12 +36,21 @@ const ACT_TWO_TIMELINE = TIMELINE.filter(
     (e.category === "education" && e.company === "IIM Lucknow")
 );
 
+// Split photos: first 6 inline, remaining in reel
+const INLINE_COUNT = 6;
+
 export function ActThreeVisionary() {
   const [lightboxPhoto, setLightboxPhoto] = useState<Photo | null>(null);
+  const [reelPaused, setReelPaused] = useState(false);
 
-  const featuredPhotos = PHOTOS.filter((p) => p.featured);
-  const otherPhotos = PHOTOS.filter((p) => !p.featured);
-  const allPhotos = [...featuredPhotos, ...otherPhotos];
+  const allPhotos = useMemo(() => {
+    const featured = PHOTOS.filter((p) => p.featured);
+    const other = PHOTOS.filter((p) => !p.featured);
+    return [...featured, ...other];
+  }, []);
+
+  const inlinePhotos = allPhotos.slice(0, INLINE_COUNT);
+  const reelPhotos = allPhotos.slice(INLINE_COUNT);
 
   // Lightbox navigation
   const lightboxIndex = lightboxPhoto
@@ -72,8 +81,8 @@ export function ActThreeVisionary() {
   }, [navigateLightbox]);
 
   return (
-    <section id="act-2" className="relative px-6 py-32">
-      <div className="mx-auto max-w-6xl">
+    <section id="act-2" className="relative py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-6xl px-6">
         {/* Section header */}
         <ScrollReveal>
           <div className="mb-2 font-mono text-xs uppercase tracking-[0.3em] text-purple">
@@ -84,6 +93,11 @@ export function ActThreeVisionary() {
           </h2>
           <p className="mb-4 font-mono text-sm text-text-muted">
             Dual Identity
+          </p>
+          <p className="mb-12 max-w-lg text-sm leading-relaxed text-text-secondary">
+            From boardroom strategy to wilderness immersion — the two lenses
+            through which I see the world. One builds empires, the other
+            captures moments.
           </p>
         </ScrollReveal>
 
@@ -109,7 +123,7 @@ export function ActThreeVisionary() {
                 <ScrollReveal key={i} delay={i * 0.1}>
                   <GlassCard rarity="epic" tilt={false} className="h-full p-5">
                     <div className="mb-2 flex flex-wrap items-center gap-2">
-                      <h3 className="font-sans text-base font-semibold text-text-primary">
+                      <h3 className="font-sans text-lg font-semibold text-text-primary">
                         {entry.company}
                       </h3>
                       <span className="rounded-full border border-amber/20 bg-amber/5 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-amber">
@@ -190,7 +204,7 @@ export function ActThreeVisionary() {
             </div>
           </div>
 
-          {/* RIGHT — The Creator */}
+          {/* RIGHT — The Creator (inline photos) */}
           <div className="flex flex-col">
             <ScrollReveal>
               <div className="mb-8">
@@ -203,9 +217,9 @@ export function ActThreeVisionary() {
               </div>
             </ScrollReveal>
 
-            {/* Photo grid - all photos always visible */}
+            {/* Inline photo grid — first 6 photos */}
             <div className="columns-1 gap-3 sm:columns-2">
-              {allPhotos.map((photo, i) => (
+              {inlinePhotos.map((photo, i) => (
                 <ScrollReveal key={photo.id}>
                   <button
                     onClick={() => setLightboxPhoto(photo)}
@@ -246,6 +260,63 @@ export function ActThreeVisionary() {
         </div>
       </div>
 
+      {/* ═══ FULL-WIDTH PHOTO REEL ═══ */}
+      {reelPhotos.length > 0 && (
+        <div className="mt-16 overflow-hidden sm:mt-20">
+          <div className="mb-6 px-6">
+            <div className="mx-auto max-w-6xl">
+              <ScrollReveal>
+                <div className="font-mono text-[10px] uppercase tracking-widest text-purple/60">
+                  More from the Field
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+
+          {/* Infinite scroll marquee */}
+          <div
+            className="cursor-pointer"
+            onClick={() => setReelPaused(!reelPaused)}
+            role="region"
+            aria-label="Photo reel — tap to pause"
+          >
+            <div className={cn("photo-reel", reelPaused && "paused")}>
+              {/* Duplicate array for seamless loop */}
+              {[...reelPhotos, ...reelPhotos].map((photo, i) => (
+                <button
+                  key={`${photo.id}-${i}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxPhoto(photo);
+                  }}
+                  className="group relative h-[200px] w-[280px] shrink-0 overflow-hidden rounded-lg border border-border transition-all duration-300 hover:border-purple/30 sm:h-[300px] sm:w-[400px] lg:h-[400px] lg:w-[540px]"
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 400px, 540px"
+                    loading="lazy"
+                  />
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-bg/80 via-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="p-4">
+                      <div className="font-sans text-sm font-semibold text-text-primary">
+                        {photo.title}
+                      </div>
+                      <div className="font-mono text-[10px] text-text-muted">
+                        {photo.category} · {photo.location}
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ═══ LIGHTBOX ═══ */}
       {lightboxPhoto && (
         <div
@@ -257,7 +328,7 @@ export function ActThreeVisionary() {
         >
           <button
             onClick={() => setLightboxPhoto(null)}
-            className="absolute right-4 top-4 z-10 text-text-muted transition-colors hover:text-text-primary"
+            className="absolute right-4 top-4 z-10 flex min-h-[44px] min-w-[44px] items-center justify-center text-text-muted transition-colors hover:text-text-primary"
             aria-label="Close lightbox"
           >
             <X size={24} />
@@ -269,7 +340,7 @@ export function ActThreeVisionary() {
                 e.stopPropagation();
                 navigateLightbox(-1);
               }}
-              className="absolute left-4 z-10 rounded-full bg-bg-card/50 p-2 text-text-muted hover:text-text-primary"
+              className="absolute left-4 z-10 flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-bg-card/50 p-2 text-text-muted hover:text-text-primary"
               aria-label="Previous photo"
             >
               <ChevronLeft size={24} />
@@ -281,7 +352,7 @@ export function ActThreeVisionary() {
                 e.stopPropagation();
                 navigateLightbox(1);
               }}
-              className="absolute right-14 z-10 rounded-full bg-bg-card/50 p-2 text-text-muted hover:text-text-primary"
+              className="absolute right-4 top-1/2 z-10 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full bg-bg-card/50 p-2 text-text-muted hover:text-text-primary"
               aria-label="Next photo"
             >
               <ChevronRight size={24} />

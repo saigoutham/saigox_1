@@ -10,6 +10,7 @@ import { RealmGate } from "@/components/effects/RealmGate";
 import { ActOneFoundation } from "@/components/sections/ActOneFoundation";
 import { ActTwoStrategist } from "@/components/sections/ActTwoStrategist";
 import { ActThreeVisionary } from "@/components/sections/ActThreeVisionary";
+import { SideProjects } from "@/components/sections/SideProjects";
 import { CharacterStats } from "@/components/sections/CharacterStats";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
@@ -55,10 +56,14 @@ export default function HomePage() {
         {/* ═══ Act III: The Foundation ═══ */}
         <ActOneFoundation />
 
+        {/* ═══ Side Projects ═══ */}
+        <div className="section-divider" />
+        <SideProjects />
+
         {/* ═══ Character Stats + Contact ═══ */}
         <div className="section-divider" />
-        <section className="px-6 py-32">
-          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
+        <section className="px-6 py-16 sm:py-24 lg:py-32">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-2 lg:gap-12">
             <CharacterStats />
             <Contact />
           </div>
