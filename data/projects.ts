@@ -18,12 +18,12 @@ export const SIDE_PROJECTS: SideProject[] = [
     tech: ["React", "Web Audio API", "Vercel"],
   },
   {
-    id: "saigox-portfolio",
-    title: "This Portfolio",
-    emoji: "\uD83C\uDFAE",
+    id: "saigox-v1",
+    title: "Portfolio v1",
+    emoji: "\uD83C\uDF10",
     url: "https://saigox.vercel.app",
     description:
-      "The site you're looking at right now — a gaming-themed portfolio with scroll-driven animations, glassmorphism, and realm transitions.",
-    tech: ["Next.js 16", "GSAP", "Tailwind CSS v4", "React 19"],
+      "The first version of my portfolio — a cleaner, minimal take that laid the groundwork for this RPG-themed evolution.",
+    tech: ["Next.js", "Tailwind CSS", "Framer Motion", "Vercel"],
   },
 ];

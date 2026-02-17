@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/cn";
-import { Menu, X, Volume2, VolumeX, Download } from "lucide-react";
-import { useRealmStore } from "@/store/useRealmStore";
+import { Menu, X, Download } from "lucide-react";
 import { REALMS } from "@/data/realms";
 
 const NAV_ACTS = [
@@ -20,9 +19,6 @@ export function Navigation() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const firstNavRef = useRef<HTMLButtonElement>(null);
-
-  const soundEnabled = useRealmStore((s) => s.visitor.soundEnabled);
-  const toggleSound = useRealmStore((s) => s.toggleSound);
 
   // Scroll tracking
   useEffect(() => {
@@ -155,18 +151,8 @@ export function Navigation() {
             })}
           </div>
 
-          {/* Desktop right side — sound + divider + CTAs */}
+          {/* Desktop right side — CTAs */}
           <div className="hidden items-center gap-3 md:flex">
-            <button
-              onClick={toggleSound}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-text-muted transition-colors hover:text-text-secondary"
-              aria-label={soundEnabled ? "Mute sound" : "Enable sound"}
-            >
-              {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-            </button>
-
-            <div className="h-4 w-px bg-border/50" />
-
             <button
               onClick={() => scrollTo("#contact")}
               className="rounded-full border border-accent bg-accent/10 px-5 py-2 font-mono text-[10px] uppercase tracking-wider text-accent transition-all hover:bg-accent/20"
@@ -262,13 +248,6 @@ export function Navigation() {
             </a>
           </div>
 
-          <button
-            onClick={toggleSound}
-            className="mt-2 flex min-h-[44px] items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted"
-          >
-            {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
-            {soundEnabled ? "Sound On" : "Sound Off"}
-          </button>
         </div>
       )}
     </>

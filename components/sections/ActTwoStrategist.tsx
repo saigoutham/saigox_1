@@ -34,7 +34,7 @@ export function ActTwoStrategist() {
             The Monetization War Room
           </p>
           <p className="mb-12 max-w-lg text-sm leading-relaxed text-text-secondary">
-            Architecting revenue systems for $80M+ mobile gaming titles. From
+            Managing an $80M+ portfolio with 10,000+ daily payers. From
             player segmentation to LiveOps festivals, every metric tells a
             story.
           </p>
@@ -304,7 +304,7 @@ export function ActTwoStrategist() {
                         <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-text-muted">
                           Results
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                           {mission.results.map((result, ri) => (
                             <div
                               key={ri}

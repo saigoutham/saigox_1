@@ -18,7 +18,7 @@ export const MISSIONS: Mission[] = [
     ],
     results: [
       { metric: "Revenue Lift", value: "10×", description: "From baseline to post-launch daily revenue" },
-      { metric: "New Daily Payers", value: "1,000+", description: "Net new daily payers attributed to the feature" },
+      { metric: "New Daily Payers", value: "10,000+", description: "Net new daily payers attributed to the feature" },
       { metric: "Retention Impact", value: "+8%", description: "D7 retention lift for engaged spin users" },
     ],
     learnings: [
@@ -44,7 +44,7 @@ export const MISSIONS: Mission[] = [
       "Created A/B test pipeline for offer presentation and pricing strategies",
     ],
     results: [
-      { metric: "Revenue Share", value: "0% → 5%", description: "D2C revenue share grew from zero to 5% in 10 months" },
+      { metric: "Revenue Share", value: "0% → 10%", description: "D2C revenue share grew from zero to 10% in 10 months" },
       { metric: "Margin Lift", value: "+22%", description: "Per-transaction margin increase vs. app store purchases" },
       { metric: "Conversion Lift", value: "+12%", description: "Higher conversion on personalized web offers" },
     ],

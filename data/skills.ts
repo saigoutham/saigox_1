@@ -13,7 +13,7 @@ export const SKILL_BRANCHES: SkillBranch[] = [
         subtitle: "Legacy feature rebuilt from scratch with segmented rewards",
         metrics: [
           { value: "10×", label: "Revenue Lift" },
-          { value: "1,000+", label: "New Daily Payers" },
+          { value: "10,000+", label: "New Daily Payers" },
           { value: "+8%", label: "D7 Retention" },
         ],
         position: { x: 20, y: 15 },
@@ -24,7 +24,7 @@ export const SKILL_BRANCHES: SkillBranch[] = [
         title: "D2C Ascension",
         subtitle: "Direct-to-customer web store bypassing app store fees",
         metrics: [
-          { value: "0%→5%", label: "Revenue Share" },
+          { value: "0%→10%", label: "Revenue Share" },
           { value: "+22%", label: "Margin per Transaction" },
           { value: "+12%", label: "Conversion Lift" },
         ],

@@ -19,7 +19,7 @@ export const CHARACTER_STATS: CharacterStat[] = [
     evidence: [
       "$80M+ annual revenue managed",
       "30+ player cohorts designed",
-      "D2C store: 0%→5% revenue share",
+      "D2C store: 0%→10% revenue share",
     ],
     color: "#FF6B6B",
   },

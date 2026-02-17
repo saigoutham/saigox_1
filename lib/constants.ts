@@ -55,8 +55,8 @@ export const TIMELINE: TimelineEntry[] = [
     location: "Bangalore",
     category: "gaming",
     highlights: [
-      "Rebuilt Spin Wheel driving 10× revenue and 1,000+ daily payers",
-      "Launched D2C store scaling 0% → 5% revenue share in 10 months",
+      "Rebuilt Spin Wheel driving 10× revenue and 10,000+ daily payers",
+      "Launched D2C store scaling 0% → 10% revenue share in 10 months",
       "Expanded segmentation from 6 to 30+ cohorts, +15% ARPDAU",
       "Automated 15K+ offer configurations, 40% faster with 30% fewer errors",
     ],
